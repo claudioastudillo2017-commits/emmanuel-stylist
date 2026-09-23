@@ -1013,8 +1013,6 @@ def crear_admin_temporal():
     except Exception as e:
         return f'Error: {str(e)}'
 
-ADMIN_NAV = '''
-
 
 ADMIN_NAV = '''
 <div class="flex flex-wrap gap-2 mb-6 text-sm">
