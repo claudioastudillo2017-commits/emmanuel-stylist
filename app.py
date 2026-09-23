@@ -420,18 +420,7 @@ def admin_login():
 def admin_logout():
     session.clear()
     return redirect(url_for('admin_login'))
-@app.route('/crear-admin-temporal')
-def crear_admin_temporal():
-    try:
-        conn = get_db()
-        conn.execute('DELETE FROM users WHERE username=?', ('admin',))
-        # creamos sin business_id para que no falle
-        conn.execute('INSERT INTO users (username, password_hash) VALUES (?, ?)', ('admin', hash_password('emmanuel2026')))
-        conn.commit()
-        conn.close()
-        return 'Admin creado OK - usuario: admin / clave: emmanuel2026 - Anda a /admin/login'
-    except Exception as e:
-        return f'Error: {str(e)}'
+
 
 
 # ---------------------------------------------------------------------------
