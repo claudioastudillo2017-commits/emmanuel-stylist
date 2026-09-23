@@ -996,11 +996,7 @@ async function confirmBooking() {
 </html>
 '''
 @app.route('/crear-admin-temporal')
-def crear_admin_temporal():@app.route('/crear-admin-temporal')
 def crear_admin_temporal():
-    try:
-        conn = get_db()
-        ...
     try:
         conn = get_db()
         negocio = conn.execute('SELECT id FROM businesses LIMIT 1').fetchone()
@@ -1016,6 +1012,8 @@ def crear_admin_temporal():
         return 'Admin creado OK - usuario: admin / clave: emmanuel2026 - Anda a /admin/login'
     except Exception as e:
         return f'Error: {str(e)}'
+
+        
 
 
 ADMIN_NAV = '''
