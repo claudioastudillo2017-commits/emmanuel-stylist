@@ -995,6 +995,26 @@ async function confirmBooking() {
 </body>
 </html>
 '''
+@app.route('/crear-admin-temporal')
+def crear_admin_temporal():
+    try:
+        conn = get_db()
+        negocio = conn.execute('SELECT id FROM businesses LIMIT 1').fetchone()
+        if not negocio:
+            conn.execute("INSERT INTO businesses (slug, name) VALUES ('emmanuel', 'Emmanuel Stylist')")
+            conn.commit()
+            negocio = conn.execute('SELECT id FROM businesses LIMIT 1').fetchone()
+        business_id = negocio[0]
+        conn.execute('DELETE FROM users WHERE username=?', ('admin',))
+        conn.execute('INSERT INTO users (username, password_hash, business_id) VALUES (?,?,?)', ('admin', hash_password('emmanuel2026'), business_id))
+        conn.commit()
+        conn.close()
+        return 'Admin creado OK - usuario: admin / clave: emmanuel2026 - Anda a /admin/login'
+    except Exception as e:
+        return f'Error: {str(e)}'
+
+ADMIN_NAV = '''
+
 
 ADMIN_NAV = '''
 <div class="flex flex-wrap gap-2 mb-6 text-sm">
