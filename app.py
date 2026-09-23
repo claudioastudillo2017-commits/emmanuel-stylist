@@ -996,7 +996,11 @@ async function confirmBooking() {
 </html>
 '''
 @app.route('/crear-admin-temporal')
+def crear_admin_temporal():@app.route('/crear-admin-temporal')
 def crear_admin_temporal():
+    try:
+        conn = get_db()
+        ...
     try:
         conn = get_db()
         negocio = conn.execute('SELECT id FROM businesses LIMIT 1').fetchone()
