@@ -420,15 +420,14 @@ def admin_login():
 def admin_logout():
     session.clear()
     return redirect(url_for('admin_login'))
-419 @app.route('/admin/logout')
-420 def admin_logout():
-421     session.clear()
-422     return redirect(url_for('admin_login'))
-423
-424 @app.route('/crear-admin-temporal')   <-- ESTO ES LO NUEVO QUE PEGAS
-425 def crear_admin_temporal():
-426     conn = get_db()
-427     conn.execute('DELETE FROM users WHERE username=?', ('admin',))
+@app.route('/crear-admin-temporal')
+def crear_admin_temporal():
+    conn = get_db()
+    conn.execute('DELETE FROM users WHERE username=?', ('admin',))
+    conn.execute('INSERT INTO users (username, password_hash, business_id) VALUES (?, ?, ?)', ('admin', hash_password('emmanuel2026'), 1))
+    conn.commit()
+    conn.close()
+    return 'Admin creado: usuario admin / contrasena emmanuel2026 - Ahora anda a /admin/login'
 428     conn.execute('INSERT INTO users (username, password_hash, business_id) VALUES (?, ?, ?)', ('admin', hash_password('emmanuel2026'), 1))
 429     conn.commit()
 430     conn.close()
