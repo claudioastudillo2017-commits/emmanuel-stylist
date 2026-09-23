@@ -422,7 +422,6 @@ def admin_logout():
     return redirect(url_for('admin_login'))
 
 
-
 # ---------------------------------------------------------------------------
 # Admin dashboard
 # ---------------------------------------------------------------------------
@@ -727,8 +726,23 @@ PUBLIC_HTML = '''
 <html lang="es">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <title>{{ biz['name'] }}</title>
+
+<!-- PWA: manifest + theme -->
+<link rel="manifest" href="/static/manifest.json">
+<meta name="theme-color" content="{{ biz['primary_color'] }}">
+
+<!-- PWA: iOS (Safari no lee manifest.json para instalación) -->
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="{{ biz['name'] }}">
+<link rel="apple-touch-icon" href="/static/icons/icon-192.png">
+
+<!-- PWA: Android / general -->
+<link rel="icon" type="image/png" sizes="192x192" href="/static/icons/icon-192.png">
+<link rel="icon" type="image/png" sizes="512x512" href="/static/icons/icon-512.png">
+
 <script src="https://cdn.tailwindcss.com"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700;900&family=Montserrat:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
@@ -873,6 +887,12 @@ PUBLIC_HTML = '''
 </div>
 
 <script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('/static/sw.js').catch(() => {});
+  });
+}
+
 const SLUG = "{{ biz['slug'] }}";
 let currentService = null;
 
@@ -984,26 +1004,6 @@ async function confirmBooking() {
 </body>
 </html>
 '''
-@app.route('/crear-admin-temporal')
-def crear_admin_temporal():
-    try:
-        conn = get_db()
-        negocio = conn.execute('SELECT id FROM businesses LIMIT 1').fetchone()
-        if not negocio:
-            conn.execute("INSERT INTO businesses (slug, name) VALUES ('emmanuel', 'Emmanuel Stylist')")
-            conn.commit()
-            negocio = conn.execute('SELECT id FROM businesses LIMIT 1').fetchone()
-        business_id = negocio[0]
-        conn.execute('DELETE FROM users WHERE username=?', ('admin',))
-        conn.execute('INSERT INTO users (username, password_hash, business_id) VALUES (?,?,?)', ('admin', hash_password('emmanuel2026'), business_id))
-        conn.commit()
-        conn.close()
-        return 'Admin creado OK - usuario: admin / clave: emmanuel2026 - Anda a /admin/login'
-    except Exception as e:
-        return f'Error: {str(e)}'
-
-        
-
 
 ADMIN_NAV = '''
 <div class="flex flex-wrap gap-2 mb-6 text-sm">
