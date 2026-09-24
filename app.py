@@ -910,7 +910,7 @@ function openModal(id, name, price, duration) {
   document.getElementById('phoneInput').value = '';
 
   const dateInput = document.getElementById('dateInput');
-  const today = new Date().toISOString().split('T')[0];
+  const today = new Date().toLocaleDateString('en-CA', {timeZone: 'America/Argentina/Buenos_Aires'});
   dateInput.min = today;
   dateInput.value = today;
   dateInput.onchange = loadSlots;
