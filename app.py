@@ -731,7 +731,7 @@ PUBLIC_HTML = '''
   .serif { font-family:'Playfair Display', serif; }
   .gold { color:{{ biz['primary_color'] }}; }
   .gold-bg { background:{{ biz['primary_color'] }}; }
-  .line-gold { height:1px; background:linear-gradient(to right, transparent, {{ biz['primary_color'] }}, transparent); }
+  .line-gold {{ height:1px; background:linear-gradient(to right, transparent, {biz['primary_color']}) }}
   .service-row:hover { background:rgba(201,168,106,0.08); cursor:pointer; }
   .modal-bg { background:rgba(0,0,0,0.85); }
 </style>
