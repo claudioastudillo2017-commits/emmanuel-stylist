@@ -133,7 +133,12 @@ def init_db():
 
         c.execute('INSERT INTO users (business_id, username, password_hash) VALUES (?,?,?)',
                    (business_id, 'admin', hash_password('1234')))
-
+    else:
+        business_id = row[0]
+        u = c.execute('SELECT id FROM users WHERE username=?', ('admin',)).fetchone()
+        if not u:
+            c.execute('INSERT INTO users (business_id, username, password_hash) VALUES (?,?,?)',
+                      (business_id, 'admin', hash_password('1234')))
         for dow in range(7):
             if dow == 6:
                 c.execute('''INSERT OR REPLACE INTO business_hours
