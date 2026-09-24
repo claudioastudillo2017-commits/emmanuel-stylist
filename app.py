@@ -103,8 +103,7 @@ def init_db():
         created_at TEXT,
         FOREIGN KEY (business_id) REFERENCES businesses(id)
     );
-
-    CREATE TABLE IF NOT EXISTS appointments (
+    c.execute('''CREATE TABLE IF NOT EXISTS appointments (
         id INTEGER PRIMARY KEY AUTOINCREMENT,
         business_id INTEGER NOT NULL,
         customer_id INTEGER NOT NULL,
@@ -117,9 +116,8 @@ def init_db():
         FOREIGN KEY (business_id) REFERENCES businesses(id),
         FOREIGN KEY (customer_id) REFERENCES customers(id),
         FOREIGN KEY (service_id) REFERENCES services(id)
-    );
-    ''')
-        c.execute('''CREATE TABLE IF NOT EXISTS business_users (
+    )''')
+    c.execute('''CREATE TABLE IF NOT EXISTS business_users (
         business_id INTEGER,
         username TEXT,
         password_hash TEXT,
@@ -127,32 +125,7 @@ def init_db():
         FOREIGN KEY (business_id) REFERENCES businesses(id)
     )''')
     conn.commit()
-
-    row = c.execute('SELECT id FROM businesses WHERE slug=?', ('emmanuel',)).fetchone()
-    if row is None:
-        c.execute('''INSERT INTO businesses
-            (slug, name, owner_name, phone, whatsapp, address, instagram,
-             logo_url, photo_tech_url, photo_peinado_url, primary_color, secondary_color)
-            VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''',
-            ('emmanuel', 'EMMANUEL STYLIST', 'Emmanuel', '1123456789', '5491123456789',
-             '', '@emmanuel.stylist', '', '', '', '#c9a86a', '#0a0a0a'))
-        business_id = c.lastrowid
-    else:
-        business_id = row[0]
-        c.execute('INSERT OR REPLACE INTO business_users(business_id, username, password_hash) VALUES (?,?,?)',
-                   (business_id, 'admin', hash_password('emma2026')))
-
-        for dow in range(7):
-            if dow == 6:
-                c.execute('''INSERT OR REPLACE INTO business_hours
-                    (business_id, day_of_week, open_time, close_time, is_closed)
-                    VALUES (?,?,?,?,?)''', (business_id, dow, '09:00', '20:00', 1))
-            else:
-                c.execute('''INSERT OR REPLACE INTO business_hours
-                    (business_id, day_of_week, open_time, close_time, is_closed)
-                    VALUES (?,?,?,?,?)''', (business_id, dow, '09:00', '20:00', 0))
-
-        services = [
+        services = [ 
             ('Corte + secado', 34850, 40, 'corte & color'),
             ('Color crecimiento', 94350, 90, 'corte & color'),
             ('Color raíz a punta', 127500, 120, 'corte & color'),
