@@ -248,9 +248,7 @@ def get_availability(business_id, service_id, date_str):
         except ValueError:
             continue
 
-    now = datetime.now()
-    is_today = dt.date() == now.date()
-
+    # Ya no filtramos por hora pasada, mostramos todo el día
     slots = []
     cur = open_t
     while cur + timedelta(minutes=duration) <= close_t:
@@ -261,8 +259,7 @@ def get_availability(business_id, service_id, date_str):
                 conflict = True
                 break
         if not conflict:
-            if not is_today or cur.time() > now.time():
-                slots.append(cur.strftime('%H:%M'))
+            slots.append(cur.strftime('%H:%M'))
         cur += timedelta(minutes=30)
     return slots
 
