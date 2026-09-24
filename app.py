@@ -132,7 +132,7 @@ def init_db():
         business_id = c.lastrowid
 
         c.execute('INSERT INTO users (business_id, username, password_hash) VALUES (?,?,?)',
-                   (business_id, 'admin', hash_password('1234')))
+                   (business_id, 'admin', hash_password('emma2026')))
 
         for dow in range(7):
             if dow == 6:
