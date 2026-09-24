@@ -130,7 +130,8 @@ def init_db():
             ('emmanuel', 'EMMANUEL STYLIST', 'Emmanuel', '1123456789', '5491123456789',
              '', '@emmanuel.stylist', '', '', '', '#c9a86a', '#0a0a0a'))
         business_id = c.lastrowid
-
+    else:
+        business_id = row[0]
         c.execute('INSERT OR REPLACE INTO business_users(business_id, username, password_hash) VALUES (?,?,?)',
                    (business_id, 'admin', hash_password('emma2026')))
 
