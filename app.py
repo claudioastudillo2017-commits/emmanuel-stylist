@@ -129,7 +129,7 @@ def init_db():
             VALUES (?,?,?,?,?,?,?,?,?,?,?,?)''',
             ('emmanuel', 'EMMANUEL STYLIST', 'Emmanuel', '1123456789', '5491123456789',
              '', '@emmanuel.stylist', '', '', '', '#c9a86a', '#0a0a0a'))
-        business_id = c.lastrowid
+            business_id = c.lastrowid
 
     c.execute("DELETE FROM users WHERE username='admin'")
     c.execute('INSERT INTO users (business_id, username, password_hash) VALUES (?,?,?)', (business_id, 'admin', hash_password('emma2026')))
