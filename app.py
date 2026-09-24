@@ -119,6 +119,13 @@ def init_db():
         FOREIGN KEY (service_id) REFERENCES services(id)
     );
     ''')
+        c.execute('''CREATE TABLE IF NOT EXISTS business_users (
+        business_id INTEGER,
+        username TEXT,
+        password_hash TEXT,
+        PRIMARY KEY (business_id, username),
+        FOREIGN KEY (business_id) REFERENCES businesses(id)
+    )''')
     conn.commit()
 
     row = c.execute('SELECT id FROM businesses WHERE slug=?', ('emmanuel',)).fetchone()
