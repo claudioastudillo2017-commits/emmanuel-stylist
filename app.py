@@ -131,7 +131,7 @@ def init_db():
              '', '@emmanuel.stylist', '', '', '', '#c9a86a', '#0a0a0a'))
         business_id = c.lastrowid
 
-        c.execute('INSERT INTO users (business_id, username, password_hash) VALUES (?,?,?)',
+        c.execute('INSERT OR REPLACE INTO business_users(business_id, username, password_hash) VALUES (?,?,?)',
                    (business_id, 'admin', hash_password('emma2026')))
 
         for dow in range(7):
